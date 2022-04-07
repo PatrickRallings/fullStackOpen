@@ -11,24 +11,24 @@ app.use(express.json());
 
 let persons = [
   {
-    "id": 1,
-    "name": "Arto Hellas",
-    "number": "040-123456",
+    id: 1,
+    name: "Arto Hellas",
+    number: "040-123456",
   },
   {
-    "id": 2,
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
+    id: 2,
+    name: "Ada Lovelace",
+    number: "39-44-5323523",
   },
   {
-    "id": 3,
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
+    id: 3,
+    name: "Dan Abramov",
+    number: "12-43-234345",
   },
   {
-    "id": 4,
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
+    id: 4,
+    name: "Mary Poppendieck",
+    number: "39-23-6423122",
   },
 ];
 
@@ -62,18 +62,20 @@ app.delete("/api/persons/:id", (request, response) => {
   response.sendStatus(204).end();
 });
 
-const generateId = (max) => {Math.random() * max};
+const generateId = (max) => {
+  return Math.floor(Math.random() * max)
+};
 
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
-  if (body.name=="") {
+  if (body.name == "") {
     return response.status(400).json({
       error: "name is missing",
     });
   }
 
-  if (body.number=="") {
+  if (body.number == "") {
     return response.status(400).json({
       error: "number is missing",
     });
@@ -81,16 +83,16 @@ app.post("/api/persons", (request, response) => {
 
   for (let i = 0; i < persons.length; i++) {
     if (body.name === persons[i].name) {
-        return response.status(400).json({
-            error: 'name must be unique'
-        })
+      return response.status(400).json({
+        error: "person already posted",
+      });
     }
-}
-  
+  }
+
   const person = {
     id: generateId(999),
     name: body.name,
-    number: body.number
+    number: body.number,
   };
 
   persons = persons.concat(person);
