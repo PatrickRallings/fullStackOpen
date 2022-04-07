@@ -1,11 +1,17 @@
 const express = require("express");
 const app = express();
 const currentDate = new Date();
+const morgan = require('morgan');
 
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.use(morgan('tiny'))
+
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :response-time ms - :res[content-length] :body - :req[content-length]'));
 
 app.use(express.json());
 
